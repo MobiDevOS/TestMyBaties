@@ -39,3 +39,17 @@ INSERT INTO teacher(t_name) VALUES('LS2');
 
 INSERT INTO class(c_name, teacher_id) VALUES('bj_a', 1);
 INSERT INTO class(c_name, teacher_id) VALUES('bj_b', 2);
+
+
+#联合查询一对多
+CREATE TABLE student(
+  s_id INT PRIMARY KEY AUTO_INCREMENT,
+  s_name VARCHAR(20),
+  class_id INT
+);
+INSERT INTO student(s_name, class_id) VALUES('xs_B', 1);
+INSERT INTO student(s_name, class_id) VALUES('xs_D', 1);
+INSERT INTO student(s_name, class_id) VALUES('xs_E', 1);
+INSERT INTO student(s_name, class_id) VALUES('xs_A', 2);
+INSERT INTO student(s_name, class_id) VALUES('xs_H', 2);
+INSERT INTO student(s_name, class_id) VALUES('xs_J', 2);

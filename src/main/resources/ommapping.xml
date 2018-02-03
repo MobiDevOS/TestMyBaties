@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.mybaties.ommaping">
+
+    <!-- 集合的嵌套结果：使用嵌套结果映射来处理重复的联合结果的子集-->
+    <select id="getClasses3" parameterType="int" resultMap="ClassesResultMap3">
+        select * from class c,teacher t, student s where c.c_id=#{id} and c.teacher_id=t.t_id and s.class_id=c.c_id
+    </select>
+
+    <resultMap type="_Classes" id="ClassesResultMap3">
+        <id column="c_id" property="id"/>
+        <result column="c_name" property="name"/>
+        <association column="teacher_id" property="teacher" javaType="_Teacher">
+            <id column="t_id" property="id"/>
+            <result column="t_name" property="name"/>
+        </association>
+        <collection property="students" ofType="_Student" javaType="ArrayList">
+            <id property="id" column="s_id" />
+            <result property="name" column="s_name"/>
+        </collection>
+    </resultMap>
+
+    <!-- 集合的嵌套查询方式, 通过执行另外一个SQL映射语句来返回预期的复杂类型 -->
+    <select id="getClasses4" parameterType="int" resultMap="ClassesResultMap4">
+        select * from class c where c.c_id=#{id}
+    </select>
+    <resultMap type="_CLasses" id="ClassesResultMap4">
+        <id column="c_id" property="id"/>
+        <result column="c_name" property="name"/>
+        <association property="teacher" javaType="_Teacher" column="teacher_id" select="getTeacher"></association>
+        <collection property="students" ofType="_Teacher" column="c_id" select="getStudentsSelect" ></collection>
+    </resultMap>
+
+    <select id="getTeacher" parameterType="int" resultType="_Teacher">
+        select t_id id, t_name name from teacher where t_id=#{id}
+    </select>
+    <select id="getStudentsSelect" parameterType="int" resultType="_Student" >
+        select s_id id, s_name name from student where class_id=#{id}
+    </select>
+
+    
+</mapper>
+

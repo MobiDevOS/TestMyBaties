@@ -28,12 +28,17 @@
     </select>
 
     <resultMap type="_Class" id="ClassesResultMap">
+        <!-- id相当于resultmap的引用的唯一标识 查询条件-->
         <id column="c_id" property="id"/>
+        <!-- property对应javabean的属性名，column对应数据库字段名 -->
         <result column="c_name" property="name"/>
         <association column="teacher_id" property="teacher" javaType="_Teacher">
             <id column="t_id" property="id"/>
             <result column="t_name" property="name"/>
         </association>
     </resultMap>
+
+
+
 </mapper>
 

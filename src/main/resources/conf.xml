@@ -11,6 +11,8 @@
         <typeAlias type="com.github.mybaties.order.Order" alias="_Order"/>
         <typeAlias type="com.github.mybaties.oomaping.Teacher" alias="_Teacher"/>
         <typeAlias type="com.github.mybaties.oomaping.Class" alias="_Class"/>
+        <typeAlias type="com.github.mybaties.ommaping.Student" alias="_Student"/>
+        <typeAlias type="com.github.mybaties.ommaping.Classes" alias="_Classes"/>
     </typeAliases>
 
     <!--数据库环境的配置基础写法一致-->
@@ -45,6 +47,12 @@
         <mapper
                 resource="oomapping.xml"
         ></mapper>
+
+        <!--查询有嵌套的一一对应的查询-->
+        <mapper
+                resource="ommapping.xml"
+        ></mapper>
+
 
     </mappers>
 
