@@ -2,18 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.mybaties">
 
+    <!-- 方式一：嵌套查询方式, 通过执行另外一个SQL映射语句来返回预期的复杂类型 -->
 
-    <!--//使用resustmap来区分来实现最后的名称统一-->
-    <select id="selectOrderResultMap" parameterType="int" resultMap="orderResultMap">
-        select * from orders where order_id=#{id}
+    <!--查询一班的情况，包括一班的老师-->
+    <select id="getClasses" parameterType="int" resultMap="ClassesResultMap2">
+        select * from class where c_id=#{id}
     </select>
 
-    <resultMap type="_Order" id="orderResultMap">
-        <id property="id" column="order_id"/>
-        <result property="orderNo" column="order_no"/>
-        <result property="price" column="order_price"/>
+    <resultMap type="_Class" id="ClassesResultMap2">
+        <id column="c_id" property="id"/>
+        <result column="c_name" property="name"/>
+        <!--嵌套查询相当于又做了一次查询 这次查询默认就一个老师对应的-->
+        <association property="teacher" javaType="_Teacher" column="teacher_id" select="getTeacher"></association>
     </resultMap>
 
+    <select id="getTeacher" parameterType="int" resultType="_Teacher">
+        select t_id id, t_name name from teacher where t_id=#{id}
+    </select>
 
+
+
+    <!--方式二：嵌套结果：使用嵌套结果映射来处理重复的联合结果的子集-->
+    <select id="getClasses2" parameterType="int" resultMap="ClassesResultMap">
+        select * from class c,teacher t where c.c_id=#{id} and c.teacher_id=t.t_id;
+    </select>
+
+    <resultMap type="_Class" id="ClassesResultMap">
+        <id column="c_id" property="id"/>
+        <result column="c_name" property="name"/>
+        <association column="teacher_id" property="teacher" javaType="_Teacher">
+            <id column="t_id" property="id"/>
+            <result column="t_name" property="name"/>
+        </association>
+    </resultMap>
 </mapper>
 

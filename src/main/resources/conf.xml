@@ -2,46 +2,51 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+    <!--定义sql的配置 可随时更换mysql or其他的数据库-->
     <properties resource="mysqldb.properties"/>
 
-
+    <!--别名的配置在mapper中进行匹配为相关的类 防止多次使用包来指示-->
     <typeAliases>
         <typeAlias type="com.github.mybaties.User" alias="_User"/>
         <typeAlias type="com.github.mybaties.order.Order" alias="_Order"/>
+        <typeAlias type="com.github.mybaties.oomaping.Teacher" alias="_Teacher"/>
+        <typeAlias type="com.github.mybaties.oomaping.Class" alias="_Class"/>
     </typeAliases>
 
-
+    <!--数据库环境的配置基础写法一致-->
     <environments default="development">
 
         <environment id="development">
 
-            <transactionManager type="JDBC" />
+            <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
 
-                <property name="driver" value="${driver}" />
-                <property name="url" value="${url}" />
-                <property name="username" value="${username}" />
-                <property name="password" value="${password}" />
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
             </dataSource>
         </environment>
 
     </environments>
+
+    <!--添加几个mapper文件 用于sql 操作映射为class文件-->
     <mappers>
 
+        <!--基础测试mybaties-->
         <mapper
-            resource="UserWapper.xml"
+                resource="UserWapper.xml"
         ></mapper>
-
+        <!--表字段和bean字段不一致的解决-->
         <mapper
                 resource="OrderMapper.xml"
         ></mapper>
-
+        <!--查询有嵌套的一一对应的查询-->
         <mapper
                 resource="oomapping.xml"
         ></mapper>
 
     </mappers>
-
 
 
 </configuration>
